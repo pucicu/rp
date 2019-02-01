@@ -36,8 +36,8 @@ function y = rqa(varargin)
 
 % Copyright (c) 2016-2019
 % Potsdam Institute for Climate Impact Research, Germany
-% Institute of Geo Sciences, University of Potsdam, Germany
-% Norbert Marwan, Hauke Krämer
+% Institute of Geosciences, University of Potsdam, Germany
+% Norbert Marwan, Hauke Kraemer
 % http://www.pik-potsdam.de
 %
 % This program is free software; you can redistribute it and/or

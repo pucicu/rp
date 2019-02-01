@@ -141,3 +141,7 @@ Trauth et al, Classifying past climate change in the Chew Bahir basin, southern 
 ## How to cite
 
 * Zenodo?
+
+## Background
+
+http://www.recurrence-plot.tk/
