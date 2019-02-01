@@ -1,5 +1,5 @@
 function [r,d] = rp(varargin)
-%RP   Calculate a recurrence plot
+%RP   Calculates a recurrence plot
 %    R=RP(X,E,THRESH,NORM,ALG) calculates the recurrence plot R 
 %    from an embedding vector X and using the threshold E.
 %    X is a N-by-M matrix corresponding to N time points
@@ -13,7 +13,7 @@ function [r,d] = rp(varargin)
 %                calculation in phasespace. Can be 'euc' 
 %                for euclidian norm (default) or 'max' 
 %                for maximum norm.
-%    ALGORITHM - is a string specifying the algorithm of 
+%          ALG - is a string specifying the algorithm of 
 %                calculating the distance matrix. Can be
 %                'loops', 'vector' (default), or 
 %                'matlabvector'.
@@ -27,7 +27,8 @@ function [r,d] = rp(varargin)
 %                distance distribution of all points in 
 %                phasespace. With 'fan' the RP is computed with
 %                a variable threshold resulting in a fixed amount 
-%                of nearest neighbours in phasespace.
+%                of nearest neighbours in phasespace, specified
+%                by the fraction E of recurrence points.
 %
 %    Reference:
 %         Marwan, N., Romano, M. C., Thiel, M., Kurths, J. (2007).

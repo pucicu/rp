@@ -1,5 +1,5 @@
 function y = rqa(varargin)
-%RQA   Calculate recurrence quantification analysis
+%RQA   Calculates recurrence quantification analysis
 %    Q=RQA(R,L,T) calculates measures of recurrence 
 %    quantification analysis for recurrence plot R using 
 %    minimal line length L and a Theiler window T. 

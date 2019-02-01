@@ -1,6 +1,6 @@
 function y = embed(varargin)
-%EMBED   Create embedding vector using time delay embedding
-%     Y=EMBED(X,M,T) create the embedding vector Y from the time
+%EMBED   Creates embedding vector using time delay embedding
+%     Y=EMBED(X,M,T) creates the embedding vector Y from the time
 %     series X using a time delay embedding with dimension M and
 %     delay T. The resulting embedding vector has length N-T*(M-1),
 %     where N is the length of the original time series.
