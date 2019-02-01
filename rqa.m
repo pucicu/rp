@@ -1,13 +1,8 @@
 function y = rqa(varargin)
-%
-%   version 1.4
-%   new:        - normalized Entropy-measurements corrected
-%
-%
-%    Calculate recurrence quantification analysis
-%    Y=RQA(X,L,T) calculates measures of recurrence 
-%    quantification analysis using minimal line length L
-%    and a Theiler window T. The reus
+%RQA   Calculate recurrence quantification analysis
+%    Q=RQA(R,L,T) calculates measures of recurrence 
+%    quantification analysis for recurrence plot R using 
+%    minimal line length L and a Theiler window T. 
 %
 %    Output:
 %      Y(1) = RR     (recurrence rate)
@@ -24,6 +19,13 @@ function y = rqa(varargin)
 %      Y(12) = Clust  (clustering coefficient)
 %      Y(13) = Trans  (transitivity)
 % 
+%    Reference:
+%         Marwan, N., Romano, M. C., Thiel, M., Kurths, J. (2007).
+%         Recurrence plots for the analysis of complex systems.
+%         Physics Reports, 438, 237-329. 
+%         Marwan, N., Donges, J. F., Zou, Y., Donner, R. V., 
+%         Kurths, J. (2009). Complex network approach for recurrence
+%         analysis of time series. Physics Letters A, 373, 4246-4254. 
 %
 %    Example:
 %         N = 300; % length of time series
@@ -32,12 +34,11 @@ function y = rqa(varargin)
 %         R = rp(xVec,.1);
 %         Y = rqa(R);
 
-% Copyright (c) 2016
-% Norbert Marwan, Potsdam Institute for Climate Impact Research, Germany
+% Copyright (c) 2016-2019
+% Potsdam Institute for Climate Impact Research, Germany
+% Institute of Geo Sciences, University of Potsdam, Germany
+% Norbert Marwan, Hauke Krämer
 % http://www.pik-potsdam.de
-%
-% Modified by Hauke Krämer, Potsdam Institute for Climate Impact Research,
-% Germany
 %
 % This program is free software; you can redistribute it and/or
 % modify it under the terms of the GNU General Public License
@@ -48,54 +49,58 @@ function y = rqa(varargin)
 narginchk(1,3)
 nargoutchk(0,1)
 
-try
+%% set default values for input parameters
+theiler_window = 1; % Theiler window
+l_min = 2; % minimal line length
+
+%% get input arguments
+% Theiler window
+if nargin > 2
     theiler_window = varargin{3};
-catch
-    theiler_window = 1;
 end
 
-try
+% minimal line length
+if nargin > 1
     l_min = varargin{2};
-catch
-    l_min = 2;
 end
+
+% recurrence matrix
 x = varargin{1};
+N = size(x); % size of recurrence plot
 
-% size of recurrence plot
-N = size(x);
 
-%% calculation
-y = zeros(13,1);
-
-% applt Theiler window to recurrence plot
+%% apply Theiler window to recurrence plot
 if theiler_window
    x_theiler = double(triu(x,theiler_window) + tril(x,-theiler_window));
 else
    x_theiler = double(x);
 end
 
+% reduce the number of possible recurrence points by the Theiler window
+N_all = N(1)*N(2); % all possible recurrence points
+N_all = N_all - N(1) - 2*((theiler_window-1)*N(1) - sum(1:(theiler_window-1))); % reduced by Theiler window
 
 
-% reduce the number of possible states by the Theiler window
-N_all = N(1)*N(2);
-N_all = N_all - N(1) - 2*((theiler_window-1)*N(1) - sum(1:(theiler_window-1)));
+%% calculation
+y = zeros(13,1); % allocate result matrix
 
 % recurrence rate
 N_recpoints = sum(x_theiler(:)); % number of rec. points (in complete RP)
 y(1) = N_recpoints/N_all; 
 
-% histogram of diagobal lines (look at entire RP)
-l_hist = zeros(1,N(1));
-for i = (1+theiler_window):N(1)
+
+% histogram of diagonal lines (look at complete RP)
+l_hist = zeros(1,N(1)); % allocate vector
+for i = (1+theiler_window):N(1) % walk along the raws (upper triangle)
    cnt = 0;
    for j = 1:(N(2)-(i-1))
-      if x_theiler(i+j-1,j)
+      if x_theiler(i+j-1,j) % are we on a rec. point? (walk along a diagonal)
          cnt = cnt+1; % count number of points on a diagonal line
-      else
+      else % line has ended
          if cnt 
-             l_hist(cnt) = l_hist(cnt) + 1; 
+             l_hist(cnt) = l_hist(cnt) + 1; % store line length
          end
-         cnt = 0;
+         cnt = 0; % set back to zero for a new line
       end
    end
    if cnt 
@@ -103,33 +108,27 @@ for i = (1+theiler_window):N(1)
    end
 end
 
-for j = (1+theiler_window):N(2)
+% 2nd triangle
+for j = (1+theiler_window):N(2)  % walk along the columns (lower triangle)
    cnt = 0;
    for i = 1:(N(1)-(j-1))
-      if x_theiler(i,j+i-1)
+      if x_theiler(i,j+i-1) % are we on a rec. point? (walk along a diagonal)
          cnt = cnt+1; % count number of points on a diagonal line
-      else
+      else % line has ended
          if cnt 
-             l_hist(cnt) = l_hist(cnt) + 1;
+             l_hist(cnt) = l_hist(cnt) + 1; % store line length
          end
-         cnt = 0;
+         cnt = 0; % set back to zero for a new line
       end
    end
    if cnt
        l_hist(cnt) = l_hist(cnt) + 1; 
    end
 end
-% check how many classes occupied in diagonal line histogram
-l_classes = 0;
-for i = 1:length(l_hist)
-    if l_hist(i)~=0
-        l_classes = l_classes + 1;
-    end
-end
 
-% Determinism
-N_recpoints2 = sum(l_hist(1:N(1)) .* (1:N(1)));  % number of rec. points (in one triangle of RP)
-y(2) = sum(l_hist(l_min:N(1)) .* (l_min:N(1))) / N_recpoints2;
+
+% determinism
+y(2) = sum(l_hist(l_min:N(1)) .* (l_min:N(1))) / N_recpoints;
 
 % mean diagonal line length
 if isnan(sum(l_hist(l_min:N(1)) .* (l_min:N(1))) / sum(l_hist(l_min:N(1))))
@@ -144,23 +143,28 @@ if any(l_hist)
 end
 
 % line length entropy
+l_classes = sum(l_hist~=0); % number of occupied bins (for normalization of entropy)
 l_prob = l_hist/sum(l_hist); % get probability distribution from histogram
 ent_Sum = (l_prob .* log(l_prob));
-y(5) = -sum(ent_Sum(~isnan(ent_Sum)))/log(l_classes);
+if l_classes > 1
+    y(5) = -nansum(ent_Sum)/log(l_classes);
+else
+    y(5) = -nansum(ent_Sum);
+end
 
-% laminarity
+
 % histogram of vertical lines
-v_hist = zeros(1,N(1));
-for i = 1:N(1)
+v_hist = zeros(1,N(1)); % allocate vector
+for i = 1:N(1) % walk along the columns
    cnt = 0;
    for j = 1:N(2)
-      if x_theiler(i,j)
+      if x_theiler(j,i) % are we on a rec. point? (walk along a column)
          cnt = cnt+1; % count number of points on a vertical line
-      else
+      else % line has ended
          if cnt
-             v_hist(cnt) = v_hist(cnt) + 1; 
+             v_hist(cnt) = v_hist(cnt) + 1; % store line length
          end
-         cnt = 0;
+         cnt = 0; % set back to zero for a new line
       end
    end
    if cnt
@@ -168,6 +172,7 @@ for i = 1:N(1)
    end
 end
 
+% laminarity
 y(6) = sum(v_hist(l_min:N(1)) .* (l_min:N(1))) / N_recpoints;
 
 % mean vertical line length (trapping time)
@@ -182,7 +187,9 @@ if any(v_hist)
    y(8) = find(v_hist,1,'last');
 end
 
-rt_hist = zeros(1,N(1));
+
+% recurrence times ("white" vertical lines)
+rt_hist = zeros(1,N(1)); % allocate vector
 for i = 1:N(1)
    cnt = 0;
    
@@ -190,26 +197,18 @@ for i = 1:N(1)
    first_flag = false;
    
    for j = 1:N(2)
-      if ~x(i,j)
-         if first_flag == true
-            cnt = cnt + 1;
+      if ~x(j,i) % are we on a white line?
+         if first_flag % line does not cross the RP's edges
+            cnt = cnt + 1; % count number of points along the vertical line
          end
-      else
-         first_flag = true;
+      else % we meet a recurrence point
+         first_flag = true; % we are for sure within the RP
          if cnt
-             rt_hist(cnt) = rt_hist(cnt) + 1; 
+             rt_hist(cnt) = rt_hist(cnt) + 1; % store line length
          end
          cnt = 0;
       end
    end
-end
-
-% check how many classes occupied in white line histogram
-rt_classes = 0;
-for i = 1:length(rt_hist)
-    if rt_hist(i)~=0
-        rt_classes = rt_classes + 1;
-    end
 end
 
 % maximal white vertical line length
@@ -224,9 +223,14 @@ if isnan(y(10))
 end
 
 % recurrence time entropy
+rt_classes = sum(rt_hist~=0); % number of occupied bins (for normalization of entropy)
 rt_prob = rt_hist/sum(rt_hist); % get probability distribution from histogram
 ent_Sum = (rt_prob .* log(rt_prob));
-y(11) = -sum(ent_Sum(~isnan(ent_Sum)))/log(rt_classes);
+if rt_classes > 1
+    y(11) = -nansum(ent_Sum)/log(rt_classes);
+else
+    y(11) = -nansum(ent_Sum);
+end
 
 % clustering
 kv = sum(x_theiler,1); % degree of nodes
