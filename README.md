@@ -1,11 +1,10 @@
-# Recurrence plot & Quantification #
+# Recurrence plot & Quantification
 
 Simple MATLAB functions for calculating recurrence plots and recurrence quantification.
 
-
 ## Functions
 
-### embed
+### EMBED
 
 Creates embedding vector using time delay embedding.
 
@@ -21,19 +20,21 @@ where `N` is the length of the original time series.
 * Packard, N. H., Crutchfield, J. P., Farmer, J. D.,
   Shaw, R. S. (1980). Geometry from a time series.
   Physical Review Letters 45, 712-716.
-          
-#### Example         
-```N = 300; % length of time series
+
+#### Example
+
+```matlab
+N = 300; % length of time series
 x = .9*sin((1:N)*2*pi/70); % exemplary time series
 y = embed(x,2,17); % embed into 2 dimensions using delay 17
 plot(y(:,1),y(:,2))
 ```
 
 --------------------------------------------------------------
+
 ### RP
 
 Calculates a recurrence plot.
-
 
 #### Syntax
 
@@ -51,7 +52,7 @@ underlying distance matrix `D`.
                  calculation in phasespace. Can be `'euc'`
                  for euclidian norm (default) or `'max'`
                  for maximum norm.
-                 
+
 `ALG` - is a string specifying the algorithm of
                  calculating the distance matrix. Can be
                  `'loops'`, `'vector'` (default), or
@@ -71,6 +72,7 @@ underlying distance matrix `D`.
 %                by the fraction `E` of recurrence points
 
 #### Reference
+
 * Marwan, N., Romano, M. C., Thiel, M., Kurths, J. (2007).
   Recurrence plots for the analysis of complex systems.
   Physics Reports, 438, 237-329.
@@ -79,15 +81,15 @@ underlying distance matrix `D`.
   recurrence characteristics in different embedding dimensions.
   Chaos, 28, 085720.
 
-
 #### Example
-```
+
+```matlab
 N = 300; % length of time series
 x = .9*sin((1:N)*2*pi/70); % exemplary time series
 xVec = embed(x,2,17); % embed into 2 dimensions using delay 17
 R = rp(xVec,.1,'fix','max'); % calculate RP using maximum norm and fixed threshold
 imagesc(R)
-```      
+```
 
 --------------------------------------------------------------
 
@@ -118,6 +120,7 @@ minimal line length `L` and a Theiler window `T.
 * `Y(13) = Trans`  (transitivity)
 
 #### Reference
+
 * Marwan, N., Romano, M. C., Thiel, M., Kurths, J. (2007).
   Recurrence plots for the analysis of complex systems.
   Physics Reports, 438, 237-329.
@@ -126,34 +129,96 @@ minimal line length `L` and a Theiler window `T.
   analysis of time series. Physics Letters A, 373, 4246-4254.
 
 #### Example
-```
+
+```matlab
 N = 300; % length of time series
 x = .9*sin((1:N)*2*pi/70); % exemplary time series
 xVec = embed(x,2,17);
 R = rp(xVec,.1);
 Y = rqa(R);
-```     
+```
+
+--------------------------------------------------------------
+
+### RP_ISO
+
+Calculates the isodirectional recurrence plot
+
+#### Syntax
+
+`R=RP_ISO(X,E,W)` calculates the isodirectional recurrence plot `R`
+from an embedding vector `X` and using the threshold `E` for the
+vector distances and threshold `W` for the angle to be
+considered as isodirectional.
+
+`R=RP_ISO(X,E,W,TAU)` estimates tangential vector using time delay `TAU`.
+
+#### Example
+
+```matlab
+[t x] = ode45('lorenz',[0 100],[-6.2 -10 14]);
+[R1, SP, R0] = rp_iso(x(3000:5000,:),10,.2);
+
+nexttile
+imagesc(R0) % regular RP
+axis square
+
+nexttile
+imagesc(R1) % isodirectional RP
+axis square
+```
+
+--------------------------------------------------------------
+
+### RP_PERP
+
+Calculates the perpendicular recurrence plot
+
+#### Syntax
+
+`R=RP_PERP(X,E,W)` calculates the perpendicular recurrence plot `R`
+from an embedding vector `X` and using the threshold `E` for the
+vector distances and threshold `W` for the angle to be
+considered as perpendicular.
+
+`R=RP_PERP(X,E,W,TAU)` estimates tangential vector using time delay `TAU`
+(works only if condition in line 95 is set to 0).
+
+#### Example
+
+```matlab
+[t x] = ode45('lorenz',[0 100],[-6.2 -10 14]);
+[R1, SP, R0] = rp_perp(x(3000:5000,:),10,.25);
+
+nexttile
+imagesc(R0) % regular RP
+axis square
+
+nexttile
+imagesc(R1) % perpendicular RP
+axis square
+```
 
 ## Application
 
 Part of this code was used in the study
 
 * M. H. Trauth, A. Asrat, W. Duesing, V. Foerster, K. H. Kraemer, N. Marwan, M. A. Maslin, F. Schaebitz: _Classifying past climate change in the Chew Bahir basin, southern Ethiopia, using recurrence quantification analysis_, Climate Dynamics, 53(5), 2557–2572 (2019). DOI:[10.1007/s00382-019-04641-3](https://doi.org/10.1007/s00382-019-04641-3)
-          
+
 ## How to cite
 
 * Zenodo link
 
 ## Background
 
-read more about recurrence plot analysis at 
+read more about recurrence plot analysis at
 <http://www.recurrence-plot.tk/>
 
 ## License
 
 (see LICENSE file)
 
-Copyright 2016-2020, 
-Potsdam Institute for Climate Impact Research (PIK), 
-Institute of Geosciences, University of Potsdam, 
+Copyright 2016-2020,
+Potsdam Institute for Climate Impact Research (PIK),
+Institute of Geosciences, University of Potsdam,
 K. Hauke Kraemer, Norbert Marwan, Martin H. Trauth
