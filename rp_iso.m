@@ -5,7 +5,19 @@ function [iso_r,sp,r] = rp_iso(varargin)
 %    vector distances and threshold W for the angle to be 
 %    considered as isodirectional.
 %
-%    R=RP_ISO(X,E,W,TAU) estimate tangential vector using time delay TAU.
+%    R=RP_ISO(X,E,W,TAU) estimates tangential vector using time delay TAU.
+%
+%    Example:
+%        [t x] = ode45('lorenz',[0 100],[-6.2 -10 14]);
+%        [R1, SP, R0] = rp_iso(x(3000:5000,:),10,.2);
+%
+%        nexttile
+%        imagesc(R0) % regular RP
+%        axis square
+%
+%        nexttile
+%        imagesc(R1) % isodirectional RP
+%        axis square
 
 % Copyright (c) 2016-2019
 % Potsdam Institute for Climate Impact Research
