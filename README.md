@@ -136,12 +136,24 @@ Y = rqa(R);
 
 ## Application
 
-Trauth et al, Classifying past climate change in the Chew Bahir basin, southern Ethiopia, using recurrence quantification analysis, *Climate Dynamics*, in press, 2019
+Part of this code was used in the study
+
+* M. H. Trauth, A. Asrat, W. Duesing, V. Foerster, K. H. Kraemer, N. Marwan, M. A. Maslin, F. Schaebitz: _Classifying past climate change in the Chew Bahir basin, southern Ethiopia, using recurrence quantification analysis_, Climate Dynamics, 53(5), 2557–2572 (2019). DOI:[10.1007/s00382-019-04641-3](https://doi.org/10.1007/s00382-019-04641-3)
           
 ## How to cite
 
-* Zenodo?
+* Zenodo link
 
 ## Background
 
-http://www.recurrence-plot.tk/
+read more about recurrence plot analysis at 
+<http://www.recurrence-plot.tk/>
+
+## License
+
+(see LICENSE file)
+
+Copyright 2016-2020, 
+Potsdam Institute for Climate Impact Research (PIK), 
+Institute of Geosciences, University of Potsdam, 
+K. Hauke Kraemer, Norbert Marwan, Martin H. Trauth
