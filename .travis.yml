@@ -1,0 +1,6 @@
+language: matlab
+matlab:
+ - latest  # Default MATLAB release on Travis CI
+ - R2020a
+
+script: cd ./tests/; matlab -batch 'test_embed'
