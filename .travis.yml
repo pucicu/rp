@@ -3,6 +3,6 @@ matlab:
  - latest  # Default MATLAB release on Travis CI
 
 script: 
- - matlab -batch 'tests/test_embed'
- - matlab -batch 'tests/test_rp'
- - matlab -batch 'tests/test_rp_iso'
+ - cd ./tests/; matlab -batch 'test_embed'
+ - cd ./tests/; matlab -batch 'test_rp'
+ - cd ./tests/; matlab -batch 'test_rp_iso'

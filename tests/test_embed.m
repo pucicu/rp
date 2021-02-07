@@ -1,5 +1,7 @@
 %% test embed.m
 
+addpath('../.')
+
 m = 3;
 tau = 2;
 x = 1:10;
