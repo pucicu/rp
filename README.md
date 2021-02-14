@@ -1,6 +1,10 @@
-# Recurrence plot & Quantification
+# Recurrence Plot & Quantification
 
 [![Build Status](https://travis-ci.com/pucicu/rp.svg?branch=master)](https://travis-ci.com/pucicu/rp)
+![commits](https://badgen.net/github/release/pucicu/rp)
+![commits](https://badgen.net/github/license/pucicu/rp)
+
+
 
 Simple MATLAB functions for calculating recurrence plots and recurrence quantification.
 
