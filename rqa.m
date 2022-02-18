@@ -4,6 +4,10 @@ function y = rqa(varargin)
 %    quantification analysis for recurrence plot R using 
 %    minimal line length L and a Theiler window T. 
 %
+%    Q=RQA(...,'NONETWORK') disable the calculation of
+%    of the network measures (for improving calculation
+%    time).
+%
 %    Output:
 %      Y(1) = RR     (recurrence rate)
 %      Y(2) = DET    (determinism)
@@ -51,7 +55,7 @@ function y = rqa(varargin)
 % program. If not, see <http://www.gnu.org/licenses/>.
 
 %% check input
-narginchk(1,3)
+narginchk(1,4)
 nargoutchk(0,1)
 
 %% set default values for input parameters
@@ -59,14 +63,23 @@ theiler_window = 1; % Theiler window
 l_min = 2; % minimal line length
 
 %% get input arguments
+i_double = find(cellfun('isclass',varargin,'double'));
+i_char = find(cellfun('isclass',varargin,'char'));
+
+% Suppress network measures?
+netw = 1;
+if ~isempty(i_char) & strcmpi(varargin{i_char(1)}(1:3),'non')
+       netw = 0;
+end
+
 % Theiler window
-if nargin > 2
-    theiler_window = varargin{3};
+if length(i_double) > 2
+    theiler_window = varargin{i_double(3)};
 end
 
 % minimal line length
-if nargin > 1
-    l_min = varargin{2};
+if length(i_double) > 1
+    l_min = varargin{i_double(2)};
 end
 
 % recurrence matrix
@@ -87,7 +100,7 @@ N_all = N_all - N(1) - 2*((theiler_window-1)*N(1) - sum(1:(theiler_window-1))); 
 
 
 %% calculation
-y = zeros(13,1); % allocate result matrix
+y = NaN * ones(13,1); % allocate result matrix
 
 % recurrence rate
 N_recpoints = sum(x_theiler(:)); % number of rec. points (in complete RP)
@@ -237,10 +250,12 @@ else
     y(11) = -nansum(ent_Sum);
 end
 
-% clustering
-kv = sum(x_theiler,1); % degree of nodes
-y(12) = nanmean(diag(x_theiler*x_theiler*x_theiler)' ./ (kv .* (kv-1)));
+if netw
+    % clustering
+    kv = sum(x_theiler,1); % degree of nodes
+    y(12) = nanmean(diag(x_theiler*x_theiler*x_theiler)' ./ (kv .* (kv-1)));
 
-% transitivity
-denom = sum(sum(x_theiler * x_theiler));
-y(13) = trace(x_theiler*x_theiler*x_theiler)/denom;
+    % transitivity
+    denom = sum(sum(x_theiler * x_theiler));
+    y(13) = trace(x_theiler*x_theiler*x_theiler)/denom;
+end
