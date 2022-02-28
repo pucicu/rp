@@ -83,7 +83,7 @@ end
 
 %% calculate distance matrix D and RP
 % distance matrix using MATLAB's pdist function
-d = squareform(pdist(x));
+d = pdist2(x,x);
 
 % apply threshold and get the RP
 r = d < e;

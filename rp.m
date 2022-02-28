@@ -168,10 +168,10 @@ switch algorithm
       switch meth
           case 'euc'
               % euclidean distance between two phase space vectors
-              d = squareform(pdist(x));
+              d = pdist2(x,x);
           otherwise
               % max-norm distance between two phase space vectors
-              d = squareform(pdist(x,'chebychev'));
+              d = pdist2(x,x,'chebychev');
       end
 end
 
