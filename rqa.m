@@ -68,7 +68,7 @@ i_char = find(cellfun('isclass',varargin,'char'));
 
 % Suppress network measures?
 netw = 1;
-if ~isempty(i_char) & strcmpi(varargin{i_char(1)}(1:3),'non')
+if ~isempty(i_char) && strcmpi(varargin{i_char(1)}(1:3),'non')
        netw = 0;
 end
 

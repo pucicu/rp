@@ -213,7 +213,7 @@ Part of this code was used in the study
 
 ## How to cite
 
-* Zenodo link
+* Use the citation provided by Zenodo <https://zenodo.org/record/6325324>
 
 ## Background
 
