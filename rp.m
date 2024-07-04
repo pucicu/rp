@@ -73,7 +73,7 @@ methLib={'euc','max'}; % the possible norms
 thresLib={'fix','var','fan'}; % the possible ways of threshold computation
 
 algorithm = 'vector';
-meth = 'max'; % norm 
+meth = 'euc'; % norm 
 thres = 'fix'; % threshold algorithm
 e = 1; % recurrence threshold
 
