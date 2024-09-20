@@ -162,14 +162,13 @@ end
 
 % line length entropy
 l_classes = sum(l_hist~=0); % number of occupied bins (for normalization of entropy)
-l_prob = l_hist/sum(l_hist); % get probability distribution from histogram
+l_prob = l_hist(l_hist~=0)/sum(l_hist(l_hist~=0)); % get probability distribution from histogram
 ent_Sum = (l_prob .* log(l_prob));
 if l_classes > 1
     y(5) = -nansum(ent_Sum)/log(N(1));
 else
     y(5) = -nansum(ent_Sum);
 end
-
 
 % histogram of vertical lines
 v_hist = zeros(1,N(1)); % allocate vector
@@ -242,7 +241,7 @@ end
 
 % recurrence time entropy
 rt_classes = sum(rt_hist~=0); % number of occupied bins (for normalization of entropy)
-rt_prob = rt_hist/sum(rt_hist); % get probability distribution from histogram
+rt_prob = rt_hist(rt_hist~=0)/sum(rt_hist(rt_hist~=0)); % get probability distribution from histogram
 ent_Sum = (rt_prob .* log(rt_prob));
 if rt_classes > 1
     y(11) = -nansum(ent_Sum)/log(N(1));
