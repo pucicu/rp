@@ -165,9 +165,9 @@ l_classes = sum(l_hist~=0); % number of occupied bins (for normalization of entr
 l_prob = l_hist(l_hist~=0)/sum(l_hist(l_hist~=0)); % get probability distribution from histogram
 ent_Sum = (l_prob .* log(l_prob));
 if l_classes > 1
-    y(5) = -nansum(ent_Sum)/log(N(1));
+    y(5) = -sum(ent_Sum(~isnan(ent_Sum)))/log(N(1));
 else
-    y(5) = -nansum(ent_Sum);
+    y(5) = -sum(ent_Sum(~isnan(ent_Sum)));
 end
 
 % histogram of vertical lines
@@ -244,15 +244,16 @@ rt_classes = sum(rt_hist~=0); % number of occupied bins (for normalization of en
 rt_prob = rt_hist(rt_hist~=0)/sum(rt_hist(rt_hist~=0)); % get probability distribution from histogram
 ent_Sum = (rt_prob .* log(rt_prob));
 if rt_classes > 1
-    y(11) = -nansum(ent_Sum)/log(N(1));
+    y(11) = -sum(ent_Sum(~isnan(ent_Sum)))/log(N(1));
 else
-    y(11) = -nansum(ent_Sum);
+    y(11) = -sum(ent_Sum(~isnan(ent_Sum)));
 end
 
 if netw
     % clustering
     kv = sum(x_theiler,1); % degree of nodes
-    y(12) = nanmean(diag(x_theiler*x_theiler*x_theiler)' ./ (kv .* (kv-1)));
+    clustering_coeff = diag(x_theiler*x_theiler*x_theiler)' ./ (kv .* (kv-1));
+    y(12) = mean(clustering_coeff(~isnan(clustering_coeff)));
 
     % transitivity
     denom = sum(sum(x_theiler * x_theiler));
