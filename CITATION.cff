@@ -1,0 +1,34 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  Recurrence plot and recurrence quantification analysis
+  implementation for MATLAB
+message: 'If you use this software, please cite it as below.'
+type: software
+authors:
+  - given-names: Norbert
+    family-names: Marwan
+    email: marwan@pik-potsdam.de
+    affiliation: Potsdam Institute for Climate Impact Research (PIK)
+    orcid: 'https://orcid.org/0000-0003-1437-7039'
+  - given-names: Hauke
+    family-names: Kraemer
+    affiliation: Potsdam Institute for Climate Impact Research (PIK)
+    orcid: 'https://orcid.org/0000-0002-9943-5391'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.4540728
+    description: Zenodo
+repository-code: 'https://github.com/pucicu/rp'
+abstract: >-
+  Simple MATLAB functions for calculating recurrence plots
+  and recurrence quantification.
+keywords:
+  - time series analysis
+  - recurrence plot
+  - recurrence quantification
+  - recurrence analysis
+license: AGPL-3.0
+date-released: '2022-03-03'
