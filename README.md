@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.com/pucicu/rp.svg?branch=master)](https://travis-ci.com/pucicu/rp)
 ![commits](https://badgen.net/github/release/pucicu/rp)
+[![SWH](https://archive.softwareheritage.org/badge/origin/https://github.com/pucicu/rp/)](https://archive.softwareheritage.org/browse/origin/?origin_url=https://github.com/pucicu/rp)
 ![commits](https://badgen.net/github/license/pucicu/rp)
 
 
