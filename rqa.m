@@ -83,7 +83,7 @@ if length(i_double) > 1
 end
 
 % recurrence matrix
-x = varargin{1};
+x = logical(varargin{1}); % convert to logical can be faster
 N = size(x); % size of recurrence plot
 
 
@@ -110,38 +110,42 @@ y(1) = N_recpoints/N_all;
 % histogram of diagonal lines (look at complete RP)
 l_hist = zeros(1,N(1)); % allocate vector
 for i = (1+theiler_window):N(1) % walk along the raws (upper triangle)
-   cnt = 0;
-   for j = 1:(N(2)-(i-1))
-      if x_theiler(i+j-1,j) % are we on a rec. point? (walk along a diagonal)
-         cnt = cnt+1; % count number of points on a diagonal line
-      else % line has ended
-         if cnt 
-             l_hist(cnt) = l_hist(cnt) + 1; % store line length
-         end
-         cnt = 0; % set back to zero for a new line
-      end
-   end
-   if cnt 
-       l_hist(cnt) = l_hist(cnt) + 1;
-   end
+    cnt = 0;
+    for j = 1:(N(2)-(i-1))
+       if x_theiler(i+j-1,j) % are we on a rec. point? (walk along a diagonal)
+          cnt = cnt+1; % count number of points on a diagonal line
+       else % line has ended
+          if cnt 
+              l_hist(cnt) = l_hist(cnt) + 1; % store line length
+          end
+          cnt = 0; % set back to zero for a new line
+       end
+    end
+    if cnt 
+        l_hist(cnt) = l_hist(cnt) + 1;
+    end
 end
 
-% 2nd triangle
-for j = (1+theiler_window):N(2)  % walk along the columns (lower triangle)
-   cnt = 0;
-   for i = 1:(N(1)-(j-1))
-      if x_theiler(i,j+i-1) % are we on a rec. point? (walk along a diagonal)
-         cnt = cnt+1; % count number of points on a diagonal line
-      else % line has ended
-         if cnt 
-             l_hist(cnt) = l_hist(cnt) + 1; % store line length
-         end
-         cnt = 0; % set back to zero for a new line
-      end
-   end
-   if cnt
-       l_hist(cnt) = l_hist(cnt) + 1; 
-   end
+% 2nd triangle (only if not symmetric)
+if ~issymmetric(x_theiler)
+    for j = (1+theiler_window):N(2)  % walk along the columns (lower triangle)
+       cnt = 0;
+       for i = 1:(N(1)-(j-1))
+          if x_theiler(i,j+i-1) % are we on a rec. point? (walk along a diagonal)
+             cnt = cnt+1; % count number of points on a diagonal line
+          else % line has ended
+             if cnt 
+                 l_hist(cnt) = l_hist(cnt) + 1; % store line length
+             end
+             cnt = 0; % set back to zero for a new line
+          end
+       end
+       if cnt
+           l_hist(cnt) = l_hist(cnt) + 1; 
+       end
+    end
+else
+    l_hist = 2*l_hist;
 end
 
 
