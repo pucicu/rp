@@ -5,8 +5,12 @@ function y = rqa(varargin)
 %    minimal line length L and a Theiler window T. 
 %
 %    Q=RQA(...,'NONETWORK') disable the calculation of
-%    of the network measures (for improving calculation
+%    the network measures (for improving calculation
 %    time).
+%
+%    Q=RQA(...,'NONORMENT') calculate standard entropy, i.e., 
+%    disable the normalisation of the line length entropy. 
+%    Default is to calculate normalised entropy.
 %
 %    Output:
 %      Y(1) = RR     (recurrence rate)
@@ -66,10 +70,19 @@ l_min = 2; % minimal line length
 i_double = find(cellfun('isclass',varargin,'double'));
 i_char = find(cellfun('isclass',varargin,'char'));
 
-% Suppress network measures?
-netw = 1;
-if ~isempty(i_char) && strcmpi(varargin{i_char(1)}(1:3),'non')
-       netw = 0;
+netw = true;
+normalisedEntropy = true;
+for k = i_char
+    switch lower(varargin{k}(1:min(4,end)))
+        % Suppress network measures?
+        case 'none'
+            netw = false;
+        % Normalised entropy
+        case 'nono'
+            normalisedEntropy = false;
+        otherwise
+            warning('rqa:unknownOption', 'Unknown option: %s', varargin{k});
+    end
 end
 
 % Theiler window
@@ -168,11 +181,11 @@ end
 l_classes = sum(l_hist~=0); % number of occupied bins (for normalization of entropy)
 l_prob = l_hist(l_hist~=0)/sum(l_hist(l_hist~=0)); % get probability distribution from histogram
 ent_Sum = (l_prob .* log(l_prob));
-if l_classes > 1
+y(5) = -sum(ent_Sum(~isnan(ent_Sum)));
+if normalisedEntropy && l_classes > 1
     y(5) = -sum(ent_Sum(~isnan(ent_Sum)))/log(N(1));
-else
-    y(5) = -sum(ent_Sum(~isnan(ent_Sum)));
 end
+
 
 % histogram of vertical lines
 v_hist = zeros(1,N(1)); % allocate vector
@@ -247,10 +260,10 @@ end
 rt_classes = sum(rt_hist~=0); % number of occupied bins (for normalization of entropy)
 rt_prob = rt_hist(rt_hist~=0)/sum(rt_hist(rt_hist~=0)); % get probability distribution from histogram
 ent_Sum = (rt_prob .* log(rt_prob));
-if rt_classes > 1
+y(11) = -sum(ent_Sum(~isnan(ent_Sum)));
+
+if normalisedEntropy & rt_classes > 1
     y(11) = -sum(ent_Sum(~isnan(ent_Sum)))/log(N(1));
-else
-    y(11) = -sum(ent_Sum(~isnan(ent_Sum)));
 end
 
 if netw
