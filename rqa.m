@@ -59,7 +59,7 @@ function y = rqa(varargin)
 % program. If not, see <http://www.gnu.org/licenses/>.
 
 %% check input
-narginchk(1,4)
+narginchk(1,5)
 nargoutchk(0,1)
 
 %% set default values for input parameters
