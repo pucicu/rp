@@ -100,53 +100,6 @@ imagesc(R)
 
 --------------------------------------------------------------
 
-### RQA
-
-Calculates recurrence quantification analysis.
-
-#### Syntax
-
-`Q=RQA(R,L,T)` calculates measures of recurrence
-quantification analysis for recurrence plot `R` using
-minimal line length `L` and a Theiler window `T.
-
-**Output:**
-
-* `Y(1) = RR`     (recurrence rate)
-* `Y(2) = DET`    (determinism)
-* `Y(3) = <L>`    (mean diagonal line length)
-* `Y(4) = Lmax`   (maximal diagonal line length)
-* `Y(5) = ENTR`   (entropy of the diagonal line lengths)
-* `Y(6) = LAM`    (laminarity)
-* `Y(7) = TT`     (trapping time)
-* `Y(8) = Vmax`   (maximal vertical line length)
-* `Y(9) = RTmax` (maximal white vertical line length)
-* `Y(10) = T2`     (recurrence time of 2nd type)
-* `Y(11) = RTE`    (recurrence time entropy, i.e., RPDE)
-* `Y(12) = Clust`  (clustering coefficient)
-* `Y(13) = Trans`  (transitivity)
-
-#### Reference
-
-* Marwan, N., Romano, M. C., Thiel, M., Kurths, J. (2007).
-  Recurrence plots for the analysis of complex systems.
-  Physics Reports, 438, 237-329.
-* Marwan, N., Donges, J. F., Zou, Y., Donner, R. V.,
-  Kurths, J. (2009). Complex network approach for recurrence
-  analysis of time series. Physics Letters A, 373, 4246-4254.
-
-#### Example
-
-```matlab
-N = 300; % length of time series
-x = .9*sin((1:N)*2*pi/70); % exemplary time series
-xVec = embed(x,2,17);
-R = rp(xVec,.1);
-Y = rqa(R);
-```
-
---------------------------------------------------------------
-
 ### RP_ISO
 
 Calculates the isodirectional recurrence plot
@@ -204,6 +157,53 @@ axis square
 nexttile
 imagesc(R1) % perpendicular RP
 axis square
+```
+
+--------------------------------------------------------------
+
+### RQA
+
+Calculates recurrence quantification analysis.
+
+#### Syntax
+
+`Q=RQA(R,L,T)` calculates measures of recurrence
+quantification analysis for recurrence plot `R` using
+minimal line length `L` and a Theiler window `T.
+
+**Output:**
+
+* `Y(1) = RR`     (recurrence rate)
+* `Y(2) = DET`    (determinism)
+* `Y(3) = <L>`    (mean diagonal line length)
+* `Y(4) = Lmax`   (maximal diagonal line length)
+* `Y(5) = ENTR`   (entropy of the diagonal line lengths)
+* `Y(6) = LAM`    (laminarity)
+* `Y(7) = TT`     (trapping time)
+* `Y(8) = Vmax`   (maximal vertical line length)
+* `Y(9) = RTmax` (maximal white vertical line length)
+* `Y(10) = T2`     (recurrence time of 2nd type)
+* `Y(11) = RTE`    (recurrence time entropy, i.e., RPDE)
+* `Y(12) = Clust`  (clustering coefficient)
+* `Y(13) = Trans`  (transitivity)
+
+#### Reference
+
+* Marwan, N., Romano, M. C., Thiel, M., Kurths, J. (2007).
+  Recurrence plots for the analysis of complex systems.
+  Physics Reports, 438, 237-329.
+* Marwan, N., Donges, J. F., Zou, Y., Donner, R. V.,
+  Kurths, J. (2009). Complex network approach for recurrence
+  analysis of time series. Physics Letters A, 373, 4246-4254.
+
+#### Example
+
+```matlab
+N = 300; % length of time series
+x = .9*sin((1:N)*2*pi/70); % exemplary time series
+xVec = embed(x,2,17);
+R = rp(xVec,.1);
+Y = rqa(R);
 ```
 
 ## Application
