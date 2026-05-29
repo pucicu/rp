@@ -169,7 +169,7 @@ Calculates recurrence quantification analysis.
 
 `Q=RQA(R,L,T)` calculates measures of recurrence
 quantification analysis for recurrence plot `R` using
-minimal line length `L` and a Theiler window `T.
+minimal line length `L` and a Theiler window `T`.
 
 **Output:**
 
@@ -206,11 +206,64 @@ R = rp(xVec,.1);
 Y = rqa(R);
 ```
 
+--------------------------------------------------------------
+
+### DL_CENSI
+
+Mean of the diagonal line lengths and their distribution 
+using the specific correction schema for border lines 
+proposed by Censi et al. 2004.
+
+#### Syntax
+
+`[A B]=DL_CENSI(R)` computes the mean `A` and the lengths of the
+found diagonal lines of the recurrence plot `R`, stored in `B`,
+using the Censi correction schema. In order to get the histogramme
+of the line lengths, simply call `HIST(B,[1 MAX(B)])`.
+
+#### Example
+
+```matlab
+a = sin(linspace(0,5*2*pi,1050));
+R = crp(a,2,50,.2,'nonorm','nogui');
+[l l_dist] = dl_censi(R); % apply Censi correction for border lines
+hist(l_dist,200)
+title('Censi correction')
+```
+
+--------------------------------------------------------------
+
+### LACUNARITY
+
+Compute lacunarity measures for a binary or grayscale image.
+
+#### Syntax
+
+`[L, LNORM, LSHUFFLED] = LACUNARITY(X, BOXSIZE)` computes the 
+lacunarity of the input matrix `X` for all box sizes specified in
+`BOXSIZE`
+
+
+#### Example
+
+```matlab
+X = rand(2000) > 0.7;
+boxSize = 2:500;
+L = lacunarity(X, boxSize);
+
+loglog(boxSize, L)
+xlabel('Box size')
+ylabel('Lacunarity')
+```
+
+--------------------------------------------------------------
+
 ## Application
 
 Part of this code was used in the study
 
 * M. H. Trauth, A. Asrat, W. Duesing, V. Foerster, K. H. Kraemer, N. Marwan, M. A. Maslin, F. Schaebitz: _Classifying past climate change in the Chew Bahir basin, southern Ethiopia, using recurrence quantification analysis_, Climate Dynamics, 53(5), 2557–2572 (2019). DOI:[10.1007/s00382-019-04641-3](https://doi.org/10.1007/s00382-019-04641-3)
+* N. Marwan, T. Braun, J. Kurths: _A Synergetic Perspective of Analyzing Phase Space Dynamics: The Crucial Role of Recurrence_, European Physical Journal Special Topics (in review).
 
 ## How to cite
 
@@ -225,7 +278,7 @@ read more about recurrence plot analysis at
 
 (see LICENSE file)
 
-Copyright 2016-2020,
+Copyright 2016-2026,
 Potsdam Institute for Climate Impact Research (PIK),
 Institute of Geosciences, University of Potsdam,
 K. Hauke Kraemer, Norbert Marwan, Martin H. Trauth
