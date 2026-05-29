@@ -258,6 +258,12 @@ ylabel('Lacunarity')
 
 --------------------------------------------------------------
 
+## Tests
+
+You can run unit tests by calling `runtests('tests')`.
+
+--------------------------------------------------------------
+
 ## Application
 
 Part of this code was used in the study

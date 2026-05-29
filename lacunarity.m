@@ -54,6 +54,7 @@ if nargout > 3
 end
 
 % Create shuffled surrogate field
+rng('default')
 rng(42)
 
 Xshuffle = reshape(X(randperm(numel(X))), size(X));
